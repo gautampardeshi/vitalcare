@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vital Care</title>
+    {% load static %}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: #0078d4;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 60px;
+            width: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .logo img:hover {
+            transform: scale(1.4);
+        }
+
+        .logo-text {
+            margin-left: 15px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: white;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .actions a {
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        .actions button {
+            background-color: #fff;
+            border: none;
+            color: #0078d4;
+            font-size: 1rem;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .actions button:hover {
+            background-color: #005bb5;
+            color: white;
+        }
+
+        main {
+            flex: 1;
+            text-align: center;
+            padding: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+        }
+
+        /* Slider */
+        .slider {
+            width: 100%;
+            max-width: 1000px;
+            margin: 30px auto;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .slider img {
+            width: 100%;
+            height: 400px; /* Adjust the height of the slider images */
+            object-fit: cover; /* Ensures the image fills the container without distortion */
+            display: block;
+        }
+
+        .slider .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slider .slide {
+            min-width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Buttons Styling */
+        .slider-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            z-index: 2;
+            transition: background-color 0.3s;
+        }
+
+        .slider-button:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .prev {
+            left: 10px;
+        }
+
+        .next {
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'user/logo.png' %}" alt="Vital Care Logo" />
+            </a>
+            <p class="logo-text">Vital Care Hospital</p>
+        </div>
+        <div class="actions">
+            <a href="{% url 'appointment' %}">
+                <button>Appointment</button>
+            </a>
+            <a href="{% url 'about_us' %}">
+                <button>About Us</button>
+            </a> 
+            <a href="{% url 'signup' %}">
+                <button>Signup</button>
+            </a>
+            <a href="{% url 'login' %}">
+                <button>Login</button>
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <h1>Welcome to Vital Care Hospital</h1>
+        <p>Your trusted partner in healthcare management.</p>
+
+        <!-- Image Slider -->
+        <div class="slider">
+            <div class="slides">
+                <div class="slide">
+                    <img src="{% static 'sliders/sliders1.jpg' %}" alt="Slide 1">
+                </div>
+                <div class="slide">
+                    <img src="{% static 'sliders/sliders2.jpg' %}" alt="Slide 2">
+                </div>
+                <div class="slide">
+                    <img src="{% static 'sliders/sliders3.jpg' %}" alt="Slide 3">
+                </div>
+            </div>
+
+            <!-- Slider Buttons -->
+            <button class="slider-button prev" onclick="prevSlide()">&#10094;</button>
+            <button class="slider-button next" onclick="nextSlide()">&#10095;</button>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2024 Vital Care. All rights reserved.
+    </footer>
+
+    <script>
+        let index = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const slideContainer = document.querySelector('.slides');
+
+        function showSlide() {
+            index++;
+            if (index >= totalSlides) {
+                index = 0;
+            }
+            slideContainer.style.transform = `translateX(-${index * 100}%)`;
+        }
+
+        // Auto-slide every 3 seconds
+        setInterval(showSlide, 3000);
+
+        // Next Slide
+        function nextSlide() {
+            index++;
+            if (index >= totalSlides) {
+                index = 0;
+            }
+            slideContainer.style.transform = `translateX(-${index * 100}%)`;
+        }
+
+        // Previous Slide
+        function prevSlide() {
+            index--;
+            if (index < 0) {
+                index = totalSlides - 1;
+            }
+            slideContainer.style.transform = `translateX(-${index * 100}%)`;
+        }
+    </script>
+</body>
+</html>

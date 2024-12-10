@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Signup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fa;
+            margin: 0;
+            padding: 0;
+        }
+        .form-container {
+            width: 100%;
+            max-width: 500px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            font-size: 14px;
+            margin-bottom: 5px;
+            display: block;
+            color: #555;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .error-list {
+            color: red;
+            margin-bottom: 15px;
+        }
+        .error-list li {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Signup</h1>
+        <form method="post" action="{% url 'signup' %}">
+            {% csrf_token %}
+            
+            <!-- Display Errors -->
+            {% if form.errors %}
+                <ul class="error-list">
+                    {% for field, errors in form.errors.items %}
+                        <li><strong>{{ field }}:</strong> {{ errors|join:', ' }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            
+            <!-- Username -->
+            <label for="id_username">Username</label>
+            {{ form.username }}
+            
+            <!-- Password -->
+            <label for="id_password1">Password</label>
+            {{ form.password1 }}
+            
+            <!-- Confirm Password -->
+            <label for="id_password2">Confirm Password</label>
+            {{ form.password2 }}
+            
+            <!-- Role -->
+            <label for="id_role">Role</label>
+            {{ form.role }}
+            
+            <!--first Name -->
+            <label for="id_first_name">First Name</label>
+            {{ form.first_name }}
+
+            <!--first Name -->
+            <label for="id_last_name">last Name</label>
+            {{ form.last_name }}
+            
+            <!-- Contact Number -->
+            <label for="id_contact_number">Contact Number</label>
+            {{ form.contact_number }}
+            
+            <!-- Age -->
+            <label for="id_age">Age</label>
+            {{ form.age }}
+            
+            <!-- Email -->
+            <label for="id_email">Email</label>
+            {{ form.email }}
+            
+            <!-- Department -->
+            <label for="id_DEPARTMENT">Department(Doctor)</label>
+            {{ form.DEPARTMENT }}
+            
+            <!-- Gender -->
+            <label for="id_gender">Gender</label>
+            {{ form.gender }}
+            
+            <!-- Submit Button -->
+            <button type="submit">Signup</button>
+        </form>
+    </div>
+</body>
+</html>
+

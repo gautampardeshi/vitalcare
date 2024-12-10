@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 0;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table th, table td {
+            text-align: left;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .form-section {
+            text-align: center;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        select {
+            font-size: 14px;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            font-size: 16px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Appointment Details</h1>
+    <div class="container">
+        <table>
+            <tr>
+                <th>Patient Name:</th>
+                <td>{{ appointment.patient_name }}</td>
+            </tr>
+            <tr>
+                <th>Patient Age:</th>
+                <td>{{ appointment.patient_age }}</td>
+            </tr>
+            <tr>
+                <th>Patient Gender:</th>
+                <td>{{ appointment.patient_gender }}</td>
+            </tr>
+            <tr>
+                <th>Patient Contact:</th>
+                <td>{{ appointment.patient_contact_number }}</td>
+            </tr>
+            <tr>
+                <th>Purpose of Visit:</th>
+                <td>{{ appointment.get_purpose_of_visit_display }}</td>
+            </tr>
+            <tr>
+                <th>Symptoms:</th>
+                <td>{{ appointment.symptoms }}</td>
+            </tr>
+            <tr>
+                <th>Appointment Date:</th>
+                <td>{{ appointment.appointment_date }}</td>
+            </tr>
+            <tr>
+                <th>Status:</th>
+                <td>{{ appointment.get_appointment_status_display }}</td>
+            </tr>
+        </table>
+
+        <div class="form-section">
+            <form method="POST">
+                {% csrf_token %}
+                <label for="status">Update Status:</label>
+                <select name="status" id="status">
+                    <option value="pending" {% if appointment.appointment_status == 'pending' %}selected{% endif %}>Pending</option>
+                    <option value="approved" {% if appointment.appointment_status == 'approved' %}selected{% endif %}>Approved</option>
+                </select>
+                <button type="submit">Update</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        &copy; {{ year|default:2024 }} Hospital Management System
+    </footer>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Dashboard</title>
+    <!-- Bootstrap CSS for styling -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .dashboard-header {
+            text-align: center;
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .table-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .no-appointments {
+            text-align: center;
+            color: #6c757d;
+        }
+        .appointment-status {
+            text-transform: capitalize;
+        }
+        .status-approved {
+            color: green;
+        }
+        .status-pending {
+            color: orange;
+        }
+        .status-rejected {
+            color: red;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .btn-logout {
+            background-color: #dc3545;
+            color: white;
+            border-radius: 5px;
+            margin-right: 15px;
+        }
+        .btn-appointment {
+            background-color: #28a745;
+            color: white;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+        <h2>Welcome, {{ request.user.first_name }}!</h2>
+        <p>Your appointment details are listed below.</p>
+    </div>
+
+    <!-- Appointment Table -->
+    <div class="container table-container">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Appointment Date</th>
+                    <th>Doctor</th>
+                    <th>Purpose</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for appointment in appointments %}
+                    <tr>
+                        <td>{{ appointment.appointment_date }}</td>
+                        <td>{{ appointment.doctor_name }}</td>
+                        <td>{{ appointment.get_purpose_of_visit_display }}</td>
+                        <td class="appointment-status 
+                            {% if appointment.appointment_status == 'approved' %} status-approved
+                            {% elif appointment.appointment_status == 'pending' %} status-pending
+                            {% else %} status-rejected
+                            {% endif %}">
+                            {{ appointment.get_appointment_status_display }}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4" class="no-appointments">You have no appointments yet.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Buttons for Appointment and Logout -->
+    <div class="button-container">
+        <a href="{% url 'logout' %}" class="btn btn-logout">Logout</a>
+        <a href="{% url 'appointment' %}" class="btn btn-appointment">Make an Appointment</a>
+    </div>
+
+    <!-- Bootstrap JS for interactive elements -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

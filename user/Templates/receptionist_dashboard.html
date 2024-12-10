@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receptionist Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 {
+            margin: 0;
+        }
+        header a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 5px 10px;
+            border: 1px solid white;
+            border-radius: 4px;
+        }
+        header a:hover {
+            background-color: white;
+            color: #007bff;
+        }
+        main {
+            padding: 20px;
+        }
+        h2 {
+            color: #007bff;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        a.button {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        a.button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome, {{ user.first_name }}</h1>
+        <a href="{% url 'logout' %}">Logout</a>
+    </header>
+    <main>
+        <h2>Appointments</h2>
+        <table>
+            <tr>
+                <th>Patient</th>
+                <th>Doctor</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            {% for appointment in appointments %}
+            <tr>
+                <td>{{ appointment.patient_name }}</td>
+                <td>{{ appointment.doctor_name }}</td>
+                <td>{{ appointment.appointment_date }}</td>
+                <td>{{ appointment.appointment_status }}</td>
+                <td>
+                    {% comment %} <a href="{% url 'edit_appointment' appointment.id %}">Edit</a> |
+                    <a href="{% url 'delete_appointment' appointment.id %}" style="color: red;">Delete</a> {% endcomment %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <a class="button" href="{% url 'appointment' %}">Book New Appointment</a>
+
+        <h2>Admit/Discharge</h2>
+        <a class="button" href="{% url 'manage_admit_discharge' %}">Manage Admit/Discharge</a>
+
+        <h2>Payments</h2>
+        <a class="button" href="{% url 'manage_payments' %}">Manage Payments</a>
+    </main>
+</body>
+</html>
