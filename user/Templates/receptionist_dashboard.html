@@ -4,107 +4,188 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Receptionist Dashboard</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-            color: #333;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
         }
         header {
-            background-color: #007bff;
+            background: #007bff;
             color: white;
-            padding: 10px 20px;
+            padding: 15px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         header h1 {
             margin: 0;
+            font-size: 1.5rem;
         }
         header a {
-            color: white;
             text-decoration: none;
-            font-weight: bold;
-            padding: 5px 10px;
-            border: 1px solid white;
-            border-radius: 4px;
+            color: white;
+            background-color: #dc3545;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: 500;
         }
         header a:hover {
-            background-color: white;
-            color: #007bff;
+            background-color: #a71d2a;
         }
         main {
-            padding: 20px;
+            padding: 30px;
         }
         h2 {
-            color: #007bff;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
+            font-size: 1.8rem;
+            color: #343a40;
+            margin-top: 40px;
             margin-bottom: 20px;
         }
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
+        .table {
+            border-radius: 10px;
+            overflow: hidden;
         }
         th {
-            background-color: #f2f2f2;
+            background-color: #000; /* Black background for table headings */
+            color: white;          /* White text for table headings */
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            text-align: center;
         }
-        a.button {
-            display: inline-block;
+        th, td {
+            padding: 12px;
+        }
+        td {
+            font-size: 0.95rem;
+            text-align: center;
+            color: #555;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .empty-row {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #6c757d;
+        }
+        .button {
             background-color: #007bff;
             color: white;
             padding: 10px 20px;
             text-decoration: none;
-            border-radius: 4px;
-            margin-bottom: 20px;
+            border-radius: 5px;
+            margin-top: 10px;
+            display: inline-block;
         }
-        a.button:hover {
+        .button:hover {
             background-color: #0056b3;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Welcome, {{ user.first_name }}</h1>
+        <h1>Welcome, Receptionist {{ user.first_name }}</h1>
         <a href="{% url 'logout' %}">Logout</a>
     </header>
     <main>
-        <h2>Appointments</h2>
-        <table>
-            <tr>
-                <th>Patient</th>
-                <th>Doctor</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-            {% for appointment in appointments %}
-            <tr>
-                <td>{{ appointment.patient_name }}</td>
-                <td>{{ appointment.doctor_name }}</td>
-                <td>{{ appointment.appointment_date }}</td>
-                <td>{{ appointment.appointment_status }}</td>
-                <td>
-                    {% comment %} <a href="{% url 'edit_appointment' appointment.id %}">Edit</a> |
-                    <a href="{% url 'delete_appointment' appointment.id %}" style="color: red;">Delete</a> {% endcomment %}
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
-        <a class="button" href="{% url 'appointment' %}">Book New Appointment</a>
+        <!-- Appointments Section -->
+        <section>
+            <h2>Appointments</h2>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Patient</th>
+                        <th>Doctor</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appointment in appointments %}
+                    <tr>
+                        <td>{{ appointment.patient_name }}</td>
+                        <td>{{ appointment.doctor }}</td>
+                        <td>{{ appointment.appointment_date }}</td>
+                        <td>{{ appointment.appointment_status }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="empty-row">No appointments found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a class="button" href="{% url 'appointment' %}">Book New Appointment</a>
+        </section>
 
-        <h2>Admit/Discharge</h2>
-        <a class="button" href="{% url 'manage_admit_discharge' %}">Manage Admit/Discharge</a>
+        <!-- Admit/Discharge Section -->
+        <section>
+            <h2>Admit/Discharge</h2>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Patient</th>
+                        <th>Doctor</th>
+                        <th>Admit Date</th>
+                        <th>Discharge Date</th>
+                        <th>Summary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for admits in admits %}
+                    <tr>
+                        <td>{{ admits.patient }}</td>
+                        <td>{{ admits.doctor }}</td>
+                        <td>{{ admits.admit_date }}</td>
+                        <td>{{ admits.discharge_date }}</td>
+                        <td>{{ admits.discharge_summary }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="empty-row">No records found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a class="button" href="{% url 'manage_admit_discharge' %}">Create Admit/Discharge</a>
+        </section>
 
-        <h2>Payments</h2>
-        <a class="button" href="{% url 'manage_payments' %}">Manage Payments</a>
+        <!-- Payments Section -->
+        <section>
+            <h2>Payments</h2>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Patient</th>
+                        <th>Date</th>
+                        <th>Total Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payment in payments %}
+                    <tr>
+                        <td>{{ payment.patient }}</td>
+                        <td>{{ payment.payment_date }}</td>
+                        <td>{{ payment.total_amount }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3" class="empty-row">No payments found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a class="button" href="{% url 'manage_payments' %}">Add New Payment</a>
+        </section>
     </main>
 </body>
 </html>

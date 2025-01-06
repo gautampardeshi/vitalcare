@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% extends 'base_admin.html' %}
+
+{% block content %}
+<h1>Admit/Discharge Details</h1>
+<p><strong>Patient:</strong> {{ admit_discharge.patient.first_name }} {{ admit_discharge.patient.last_name }}</p>
+<p><strong>Admit Date:</strong> {{ admit_discharge.admit_date }}</p>
+<p><strong>Discharge Date:</strong> {{ admit_discharge.discharge_date }}</p>
+<p><strong>Treatment Plan:</strong> {{ admit_discharge.treatment_plan }}</p>
+{% endblock %}
+
+</body>
+</html>

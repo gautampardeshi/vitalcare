@@ -34,9 +34,16 @@ class AppointmentForm(forms.ModelForm):
 class AdmitDischargeForm(forms.ModelForm):
     class Meta:
         model = AdmitDischargeDetails
-        fields = ['patient', 'admit_date', 'discharge_date', 'discharge_summary', 'ward', 'treatment_plan']
+        fields = ['patient','doctor', 'admit_date', 'discharge_date', 'discharge_summary', 'ward', 'treatment_plan']
+        widgets = {
+            'admit_date': forms.DateInput(attrs={'type': 'date'}),
+            'discharge_date':forms.DateInput(attrs={'type':'date'})
+            }
 
 class PaymentForm(forms.ModelForm):
     class Meta:
         model = Payment
-        fields = ['patient', 'admit_discharge_details', 'consultancy_fees', 'other_charges','total_amount','payment_date']
+        fields = ['patient', 'admit_discharge_details','admit_charges', 'consultancy_fees', 'other_charges','total_amount','payment_date']
+        widgets = {
+            'payment_date': forms.DateInput(attrs={'type': 'date'}),
+        }

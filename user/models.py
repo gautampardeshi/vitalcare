@@ -2,6 +2,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from datetime import date
+from decimal import Decimal
 
 class CustomUser(AbstractUser):
     ROLE_CHOICES = [
@@ -44,6 +45,8 @@ class CustomUser(AbstractUser):
     age = models.IntegerField(null=True, blank=True)
     contact_number = models.CharField(max_length=15, null=True, blank=True)
     
+    def __str__(self):
+        return self.first_name
 #appointment
 class Appointment(models.Model):
     GENDER_CHOICE = [
@@ -95,10 +98,10 @@ class Appointment(models.Model):
         null=True, 
         blank=True,
         related_name='appointment_payment'
-    )  # Optional relationship with Payment
+    ) 
 
     def __str__(self):
-        return f"Appointment for {self.patient_name} with Dr. {self.doctor.get_full_name()} on {self.appointment_date}"
+        return f"Appointment for {self.patient_name} with Dr. {self.doctor} on {self.appointment_date}"
 
     def save(self, *args, **kwargs):
         if self.pk:  # Check if this is an update
@@ -108,16 +111,29 @@ class Appointment(models.Model):
         super().save(*args, **kwargs)
 
 class AdmitDischargeDetails(models.Model):
-    patient = models.ForeignKey(CustomUser, on_delete=models.CASCADE, limit_choices_to={'role': 'patient'})
-    admit_date = models.DateField(null=True,blank=True,default=date.today)
-    discharge_date = models.DateField(null=True, blank=True,default=date.today)
-    discharge_summary = models.TextField(null=True, blank=True)
-    ward = models.CharField(max_length=100, null=True, blank=True)  # Ward details
-    treatment_plan = models.TextField(null=True, blank=True)  # Treatment plan details
+    patient = models.ForeignKey(
+        CustomUser, 
+        on_delete=models.CASCADE, 
+        limit_choices_to={'role': 'patient'}, 
+        verbose_name="Patient"
+    )
+    doctor = models.ForeignKey(
+        CustomUser,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        limit_choices_to={'role': 'doctor'},
+        related_name='AdmitDischargeDetails'
+    ) 
+
+    admit_date = models.DateField(null=True, blank=True, default=date.today, verbose_name="Admit Date")
+    discharge_date = models.DateField(null=True, blank=True, verbose_name="Discharge Date")
+    discharge_summary = models.TextField(null=True, blank=True, verbose_name="Discharge Summary")
+    ward = models.CharField(max_length=100, null=True, blank=True, verbose_name="Ward")
+    treatment_plan = models.TextField(null=True, blank=True, verbose_name="Treatment Plan")
 
     def __str__(self):
-        return f"{self.patient.first_name} {self.patient.last_name} - Admit: {self.admit_date}, Discharge: {self.discharge_date or 'N/A'}"
-
+        return f"{self.patient.get_full_name()} - Admit: {self.admit_date}, Discharge: {self.discharge_date or 'N/A'}"
 
 class Payment(models.Model):
     patient = models.ForeignKey(CustomUser, on_delete=models.CASCADE, limit_choices_to={'role': 'patient'},null=True, blank=True)  # Relationship with CustomUser
@@ -127,11 +143,7 @@ class Payment(models.Model):
     other_charges = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_date = models.DateField(default=date.today)
-
-    def save(self, *args, **kwargs):
-        # Automatically calculate the total amount
-        self.total_amount = self.admit_charges + self.consultancy_fees + self.other_charges
-        super().save(*args, **kwargs)
-
+    
     def __str__(self):
         return f"Payment for {self.patient.first_name} {self.patient.last_name} - Total: {self.total_amount}"
+    

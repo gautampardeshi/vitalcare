@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% extends 'base_admin.html' %}
+
+{% block content %}
+<h1>Payment Details</h1>
+<p><strong>Patient:</strong> {{ payment.patient.first_name }} {{ payment.patient.last_name }}</p>
+<p><strong>Total Amount:</strong> {{ payment.total_amount }}</p>
+<p><strong>Payment Date:</strong> {{ payment.payment_date }}</p>
+{% endblock %}
+
+</body>
+</html>

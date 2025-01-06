@@ -4,190 +4,205 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/css/bootstrap.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f7fc;
-            color: #333;
-            margin: 0;
-            padding: 0;
+            background-color: #f4f6f9;
         }
-        header {
-            background-color: #2c3e50;
+        .navbar {
+            background: linear-gradient(45deg, #007bff, #00c6ff);
             color: white;
-            padding: 10px 20px;
-            text-align: center;
         }
-        h1 {
-            margin: 0;
-            font-size: 2rem;
-        }
-        .container {
-            padding: 20px;
-        }
-        h2 {
-            color: #2c3e50;
+        .navbar .navbar-brand {
+            font-weight: bold;
             font-size: 1.5rem;
-            margin-bottom: 15px;
+            color: white;
         }
-        .role-list, .appointment-list, .payment-list, .admit-list {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: white;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+        .navbar .logout-btn {
+            color: white;
+            border: 1px solid white;
+            transition: all 0.3s;
         }
-        .role-list ul, .appointment-list ul, .payment-list ul, .admit-list ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        .role-list li, .appointment-list li, .payment-list li, .admit-list li {
-            margin-bottom: 10px;
-            font-size: 1rem;
-        }
-        .role-list li:before {
-            content: "• ";
-            color: #3498db;
+        .navbar .logout-btn:hover {
+            background: white;
+            color: #007bff;
         }
         .card {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
+            border: none;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
-        .card > div {
-            width: 48%;
-            margin-bottom: 20px;
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
         }
-        .btn {
-            background-color: #3498db;
+        .card-header {
+            font-size: 1.2rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #007bff, #00c6ff);
             color: white;
-            padding: 8px 15px;
-            border-radius: 5px;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 10px;
         }
-        .btn:hover {
-            background-color: #2980b9;
+        .table-section h3 {
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .table-striped tbody tr:hover {
+            background-color: #f1f1f1;
         }
         .footer {
-            background-color: #2c3e50;
-            color: white;
             text-align: center;
-            padding: 10px 0;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
+            margin-top: 40px;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Welcome, {{ admin_name }}</h1>
-    </header>
-    <div class="container">
-        <h2>User Roles</h2>
-        <div class="card">
-            <div class="role-list">
-                <h3>Admins</h3>
-                <ul>
-                    {% for admin in user_roles.admins %}
-                        <li>{{ admin.first_name }} {{ admin.last_name }}</li>
-                    {% empty %}
-                        <li>No admins found</li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <div class="role-list">
-                <h3>Doctors</h3>
-                <ul>
-                    {% for doctor in user_roles.doctors %}
-                        <li>{{ doctor.first_name }} {{ doctor.last_name }}</li>
-                    {% empty %}
-                        <li>No doctors found</li>
-                    {% endfor %}
-                </ul>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg p-3">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Admin Dashboard</a>
+            <div class="d-flex">
+                <span class="me-3">Welcome, <strong>{{ admin_name }}</strong></span>
+                <a href="{% url 'logout' %}" class="btn btn-outline-light logout-btn">Logout</a>
             </div>
         </div>
-        <div class="card">
-            <div class="role-list">
-                <h3>Patients</h3>
-                <ul>
-                    {% for patient in user_roles.patients %}
-                        <li>{{ patient.first_name }} {{ patient.last_name }}</li>
-                    {% empty %}
-                        <li>No patients found</li>
-                    {% endfor %}
-                </ul>
+    </nav>
+
+    <div class="container mt-5">
+        <!-- Top Cards Section -->
+        <div class="row">
+            <!-- Appointments Card -->
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">Appointments</div>
+                    <div class="card-body text-center">
+                        <p class="mb-3">Total: {{ appointments_list.count }}</p>
+                        <a href="{% url 'appointment' %}" class="btn btn-primary">Create Appointment</a>
+                    </div>
+                </div>
             </div>
-            <div class="role-list">
-                <h3>Nurses</h3>
-                <ul>
-                    {% for nurse in user_roles.nurses %}
-                        <li>{{ nurse.first_name }} {{ nurse.last_name }}</li>
-                    {% empty %}
-                        <li>No nurses found</li>
-                    {% endfor %}
-                </ul>
+
+            <!-- Admit/Discharge Card -->
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">Admit/Discharge</div>
+                    <div class="card-body text-center">
+                        <p class="mb-3">Total: {{ admit_discharge_list.count }}</p>
+                        <a href="{% url 'manage_admit_discharge' %}" class="btn btn-primary">Manage Records</a>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="card">
-            <div class="role-list">
-                <h3>Receptionists</h3>
-                <ul>
-                    {% for receptionist in user_roles.receptionists %}
-                        <li>{{ receptionist.first_name }} {{ receptionist.last_name }}</li>
-                    {% empty %}
-                        <li>No receptionists found</li>
-                    {% endfor %}
-                </ul>
+
+            <!-- Payments Card -->
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">Payments</div>
+                    <div class="card-body text-center">
+                        <p class="mb-3">Total: {{ payments_list.count }}</p>
+                        <a href="{% url 'manage_payments' %}" class="btn btn-primary">Manage Payments</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Card -->
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">Users</div>
+                    <div class="card-body text-center">
+                        <p>
+                            Doctors: {{ user_roles.doctors }}<br>
+                            Patients: {{ user_roles.patients }}
+                        </p>
+                        <a href="{% url 'list_users' %}" class="btn btn-primary">Manage Users</a>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <h2>Appointments</h2>
-        <div class="appointment-list">
-            {% if appointments %}
-                <ul>
-                    {% for appointment in appointments %}
-                        <li>Appointment for {{ appointment.patient_name }} with Dr. {{ appointment.doctor.first_name }} {{ appointment.doctor.last_name }} on {{ appointment.appointment_date }}</li>
+        <!-- Details Section -->
+        <div class="table-section mt-5">
+            <h3>Appointments</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Patient</th>
+                        <th>Doctor</th>
+                        <th>Status</th>
+                        <th>Contact</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appointment in appointments_list %}
+                        <tr>
+                            <td>{{ appointment.appointment_date }}</td>
+                            <td>{{ appointment.patient_name }}</td>
+                            <td>{{ appointment.doctor }}</td>
+                            <td>{{ appointment.appointment_status }}</td>
+                            <td>{{ appointment.patient_contact_number }}</td>
+                        </tr>
                     {% endfor %}
-                </ul>
-            {% else %}
-                <p>No appointments found</p>
-            {% endif %}
+                </tbody>
+            </table>
         </div>
 
-        <h2>Payments</h2>
-        <div class="payment-list">
-            {% if payments %}
-                <ul>
-                    {% for payment in payments %}
-                        <li>Payment for {{ payment.patient.first_name }} {{ payment.patient.last_name }} - Amount: {{ payment.total_amount }}</li>
+        <div class="table-section mt-5">
+            <h3>Admit/Discharge Records</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Patient</th>
+                        <th>Doctor</th>
+                        <th>Admit Date</th>
+                        <th>Discharge Date</th>
+                        <th>Summary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in admit_discharge_list %}
+                        <tr>
+                            <td>{{ record.patient }}</td>
+                            <td>{{ record.doctor }}</td>
+                            <td>{{ record.admit_date }}</td>
+                            <td>{{ record.discharge_date }}</td>
+                            <td>{{ record.discharge_summary }}</td>
+                        </tr>
                     {% endfor %}
-                </ul>
-            {% else %}
-                <p>No payments found</p>
-            {% endif %}
+                </tbody>
+            </table>
         </div>
 
-        <h2>Admits/Discharges</h2>
-        <div class="admit-list">
-            {% if admits %}
-                <ul>
-                    {% for admit in admits %}
-                        <li>{{ admit.patient.first_name }} {{ admit.patient.last_name }} - Admit Date: {{ admit.admit_date }} - Discharge Date: {{ admit.discharge_date }}</li>
+        <div class="table-section mt-5">
+            <h3>Payment Records</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Patient</th>
+                        <th>Total Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payment in payments_list %}
+                        <tr>
+                            <td>{{ payment.payment_date }}</td>
+                            <td>{{ payment.patient }}</td>
+                            <td>{{ payment.total_amount }}</td>
+                        </tr>
                     {% endfor %}
-                </ul>
-            {% else %}
-                <p>No admit/discharge records found</p>
-            {% endif %}
+                </tbody>
+            </table>
         </div>
-
-        <a href="#" class="btn">Add New Appointment</a>
     </div>
-    
-    <footer class="footer">
-        <p>&copy; 2024 Your Hospital Management System</p>
-    </footer>
+
+    <!-- Footer -->
+    <div class="footer">
+        &copy; 2024 Admin Dashboard - Built with Django and Bootstrap
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

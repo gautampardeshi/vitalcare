@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% extends 'base_admin.html' %}
+
+{% block content %}
+<h1>Appointment Details</h1>
+<p><strong>Patient:</strong> {{ appointment.patient_name }}</p>
+<p><strong>Doctor:</strong> Dr. {{ appointment.doctor.get_full_name }}</p>
+<p><strong>Appointment Date:</strong> {{ appointment.appointment_date }}</p>
+<p><strong>Status:</strong> {{ appointment.appointment_status }}</p>
+
+<form method="POST">
+    {% csrf_token %}
+    <label for="status">Update Status:</label>
+    <select name="status" id="status" class="form-control">
+        <option value="pending" {% if appointment.appointment_status == 'pending' %}selected{% endif %}>Pending</option>
+        <option value="approved" {% if appointment.appointment_status == 'approved' %}selected{% endif %}>Approved</option>
+    </select>
+    <button type="submit" class="btn btn-warning mt-3">Update Status</button>
+</form>
+{% endblock %}
+</body>
+</html>

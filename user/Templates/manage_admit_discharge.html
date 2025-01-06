@@ -16,19 +16,72 @@
                 <form method="POST">
                     {% csrf_token %}
                     
-                    <!-- Display form fields dynamically -->
-                    {% for field in form %}
-                        <div class="mb-3">
-                            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                            {{ field }}
-                            {% if field.errors %}
-                                <div class="text-danger">
-                                    {{ field.errors }}
-                                </div>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-                    
+                    <!-- Patient Selection -->
+                    <div class="mb-3">
+                        <label for="patient" class="form-label">Patient</label>
+                        {{ form.patient }}
+                        {% if form.patient.errors %}
+                            <div class="text-danger mt-1">
+                                {{ form.patient.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Admit Date -->
+                    <div class="mb-3">
+                        <label for="admit_date" class="form-label">Admit Date</label>
+                        {{ form.admit_date }}
+                        {% if form.admit_date.errors %}
+                            <div class="text-danger mt-1">
+                                {{ form.admit_date.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Discharge Date -->
+                    <div class="mb-3">
+                        <label for="discharge_date" class="form-label">Discharge Date</label>
+                        {{ form.discharge_date }}
+                        {% if form.discharge_date.errors %}
+                            <div class="text-danger mt-1">
+                                {{ form.discharge_date.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Discharge Summary -->
+                    <div class="mb-3">
+                        <label for="discharge_summary" class="form-label">Discharge Summary</label>
+                        {{ form.discharge_summary }}
+                        {% if form.discharge_summary.errors %}
+                            <div class="text-danger mt-1">
+                                {{ form.discharge_summary.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Ward -->
+                    <div class="mb-3">
+                        <label for="ward" class="form-label">Ward</label>
+                        {{ form.ward }}
+                        {% if form.ward.errors %}
+                            <div class="text-danger mt-1">
+                                {{ form.ward.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Treatment Plan -->
+                    <div class="mb-3">
+                        <label for="treatment_plan" class="form-label">Treatment Plan</label>
+                        {{ form.treatment_plan }}
+                        {% if form.treatment_plan.errors %}
+                            <div class="text-danger mt-1">
+                                {{ form.treatment_plan.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+
                     <!-- Submit Button -->
                     <div class="d-grid">
                         <button type="submit" class="btn btn-success">Submit</button>

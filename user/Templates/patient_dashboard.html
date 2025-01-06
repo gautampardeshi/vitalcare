@@ -4,72 +4,115 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patient Dashboard</title>
-    <!-- Bootstrap CSS for styling -->
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa;
-            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            font-family: 'Roboto', sans-serif;
+        }
+        .navbar {
+            background: linear-gradient(45deg, #007bff, #00c6ff);
+            color: white;
+        }
+        .navbar-brand {
+            font-weight: bold;
+            color: white;
+        }
+        .navbar .btn-logout {
+            background-color: #dc3545;
+            color: white;
+            border-radius: 5px;
+        }
+        .navbar .btn-logout:hover {
+            background-color: #b02a37;
         }
         .dashboard-header {
             text-align: center;
-            background-color: #007bff;
+            background: linear-gradient(45deg, #007bff, #00c6ff);
             color: white;
-            padding: 20px;
-            border-radius: 5px;
-            margin-bottom: 20px;
+            padding: 30px;
+            margin-top: 56px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
         .table-container {
             background-color: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+        }
+        th {
+            background: #007bff;
+            color: white;
+        }
+        th, td {
+            text-align: center;
+            padding: 12px;
+        }
+        .appointment-status {
+            font-weight: bold;
+            text-transform: capitalize;
+        }
+        .status-approved {
+            color: #28a745;
+        }
+        .status-pending {
+            color: #ffc107;
+        }
+        .status-rejected {
+            color: #dc3545;
         }
         .no-appointments {
             text-align: center;
             color: #6c757d;
+            font-size: 1.1rem;
+            padding: 20px;
         }
-        .appointment-status {
-            text-transform: capitalize;
-        }
-        .status-approved {
-            color: green;
-        }
-        .status-pending {
-            color: orange;
-        }
-        .status-rejected {
-            color: red;
-        }
-        .button-container {
+        .btn-container {
             text-align: center;
             margin-top: 20px;
-        }
-        .btn-logout {
-            background-color: #dc3545;
-            color: white;
-            border-radius: 5px;
-            margin-right: 15px;
         }
         .btn-appointment {
             background-color: #28a745;
             color: white;
+            padding: 10px 20px;
             border-radius: 5px;
+            text-decoration: none;
+        }
+        .btn-appointment:hover {
+            background-color: #218838;
         }
     </style>
 </head>
 <body>
 
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top p-3">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Patient Dashboard</a>
+            <div class="d-flex">
+                <a href="{% url 'logout' %}" class="btn btn-logout">Logout</a>
+            </div>
+        </div>
+    </nav>
+
     <!-- Dashboard Header -->
-    <div class="dashboard-header">
-        <h2>Welcome, {{ request.user.first_name }}!</h2>
-        <p>Your appointment details are listed below.</p>
+    <div class="container mt-5">
+        <div class="dashboard-header">
+            <h2>Welcome, {{ request.user.first_name }}!</h2>
+            <p>Below are your upcoming appointments.</p>
+        </div>
     </div>
 
     <!-- Appointment Table -->
     <div class="container table-container">
         <table class="table table-bordered table-hover">
-            <thead class="thead-dark">
+            <thead>
                 <tr>
                     <th>Appointment Date</th>
                     <th>Doctor</th>
@@ -81,7 +124,7 @@
                 {% for appointment in appointments %}
                     <tr>
                         <td>{{ appointment.appointment_date }}</td>
-                        <td>{{ appointment.doctor_name }}</td>
+                        <td>{{ appointment.doctor }}</td>
                         <td>{{ appointment.get_purpose_of_visit_display }}</td>
                         <td class="appointment-status 
                             {% if appointment.appointment_status == 'approved' %} status-approved
@@ -100,13 +143,12 @@
         </table>
     </div>
 
-    <!-- Buttons for Appointment and Logout -->
-    <div class="button-container">
-        <a href="{% url 'logout' %}" class="btn btn-logout">Logout</a>
+    <!-- Action Buttons -->
+    <div class="btn-container">
         <a href="{% url 'appointment' %}" class="btn btn-appointment">Make an Appointment</a>
     </div>
 
-    <!-- Bootstrap JS for interactive elements -->
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

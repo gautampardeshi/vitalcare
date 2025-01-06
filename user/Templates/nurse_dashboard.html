@@ -4,14 +4,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nurse Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        header p {
+            margin: 0;
+            font-size: 16px;
+        }
+        header a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 5px 10px;
+            border: 1px solid white;
+            border-radius: 4px;
+        }
+        header a:hover {
+            background-color: white;
+            color: #007bff;
+        }
+        main {
+            padding: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li {
+            margin-bottom: 10px;
+        }
+        ul li a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+        ul li a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome, Nurse!</h1>
-    <ul>
-        <li><a href="#">Assigned Patients</a></li>
-        <li><a href="#">Update Records</a></li>
-        <li><a href="#">Duty Schedule</a></li>
-    </ul>
-    <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+    <header>
+        <div>
+            <h1>Welcome, Nurse {{ user.first_name }} {{ user.last_name }}!</h1>
+            <p>Department: {{ user.DEPARTMENT }}</p>
+        </div>
+        <a href="{% url 'logout' %}">Logout</a>
+    </header>
+    <main>
+        <h2>Dashboard Options</h2>
+        <ul>
+            <li><a href="#"></a></li>
+            <li><a href="#"></a></li>
+            <li><a href="#"></a></li>
+        </ul>
+    </main>
 </body>
 </html>
+

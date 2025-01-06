@@ -27,7 +27,7 @@ class AppointmentAdmin(admin.ModelAdmin):
 
 @admin.register(AdmitDischargeDetails)
 class AdmitDischargeDetailsAdmin(admin.ModelAdmin):
-    list_display = ['patient', 'admit_date', 'discharge_date']
+    list_display = ['patient','doctor', 'admit_date', 'discharge_date']
     search_fields = ['patient__first_name', 'patient__last_name']
 
 
